@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<phpunit>
+	<testsuites>
+		<testsuite name="OTP">
+			<file>Tests/testOTP.php</file>
+		</testsuite>
+	</testsuites>
+</phpunit>
