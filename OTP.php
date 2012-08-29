@@ -15,7 +15,7 @@ class OTP {
 	 * @return string n-character numeric code
 	 */
 	public static function TOTP($key, $step = 30, $t0 = 0, $digits = 6) {
-		$counterInt = floor((time() - $t0) / $step);
+		$counterInt = floor(($_SERVER['REQUEST_TIME'] - $t0) / $step);
 		$C = pack('N*', $counterInt & 0xFFFFFFFF00000000) 
 		   . pack('N*', $counterInt & 0x00000000FFFFFFFF);
 		return self::HOTP($key, $C, $digits);
