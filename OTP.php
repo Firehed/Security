@@ -55,6 +55,9 @@ class OTP {
 		if (strlen($counter) != 8) {
 			throw new Exception('Counter must be 8 bytes long');
 		}
+		if (strlen($key) < 128 / 8) {
+			throw new Exception('Key must be at least 128 bits long (160+ recommended)');
+		}
 
 		$hash = hash_hmac($algorithm, $counter, $key, true);
 		$offset = ord(substr($hash, -1)) & 0xF;
