@@ -2,7 +2,7 @@
 use Firehed\Security\OTP;
 require_once 'OTP.php';
 
-class OTPTest extends PHPUnit_Framework_TestCase {
+class TOTP_Tests extends PHPUnit_Framework_TestCase {
 
 	// Test vectors provided by RFC 6238, Appendix B
 	function vectors() {
@@ -37,7 +37,7 @@ class OTPTest extends PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider vectors
 	 */
-	function testOTP($ts, $expectedOut, $algo, $tok) {
+	function testVectors($ts, $expectedOut, $algo, $tok) {
 		$_SERVER['REQUEST_TIME'] = $ts;
 		$this->assertSame($expectedOut, OTP::TOTP($tok, array('digits' => strlen($expectedOut), 'algorithm' => $algo)));
 	}
