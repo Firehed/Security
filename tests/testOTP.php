@@ -39,7 +39,7 @@ class OTPTest extends PHPUnit_Framework_TestCase {
 	 */
 	function testOTP($ts, $expectedOut, $algo, $tok) {
 		$_SERVER['REQUEST_TIME'] = $ts;
-		$this->assertSame($expectedOut, OTP::TOTP($tok, 30, 0, strlen($expectedOut), $algo));
+		$this->assertSame($expectedOut, OTP::TOTP($tok, array('digits' => strlen($expectedOut), 'algorithm' => $algo)));
 	}
 
 }

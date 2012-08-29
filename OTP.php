@@ -15,13 +15,21 @@ class OTP {
 	 * @see RFC 6238
 	 * @param $key shared secret, treated as binary (note: Google Authenticator's keys are base32-encoded, and must be decoded before being passed in)
 	 * [@param $step = 30] Time step in seconds (section 4.1)
-	 * [@param $t0 = 0] Unix time to start counting steps (section 4.1) (note: positive and negative $t0 in $step increments may be used to check the next and previous codes respectively, which can help address clock drift)
+	 * [@param $offset = 0] Unix time to start counting steps (section 4.1) (note: positive and negative $t0 in $step increments may be used to check the next and previous codes respectively, which can help address clock drift)
 	 * [@param $digits = 6] Length of the output code
 	 * [@param $algorithm = 'sha1'] HMAC algorithm - sha1, sha256, and sha512 permitted
 	 * @return string n-character numeric code
 	 */
-	public static function TOTP($key, $step = 30, $t0 = 0, $digits = 6, $algorithm = 'sha1') {
-		$counterInt = floor(($_SERVER['REQUEST_TIME'] - $t0) / $step);
+	public static function TOTP($key, array $options = array()) {
+		// Parse options
+		$step      = 30;
+		$offset    = 0;
+		$digits    = 6;
+		$algorithm = 'sha1';
+		extract($options);
+
+		$counterInt = floor(($_SERVER['REQUEST_TIME'] - $offset) / $step);
+
 		$counter = pack('N*', $counterInt & 0xFFFFFFFF00000000) 
 		         . pack('N*', $counterInt & 0x00000000FFFFFFFF);
 		return self::HOTP($key, $counter, $digits, $algorithm);
