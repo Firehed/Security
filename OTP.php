@@ -32,7 +32,7 @@ class OTP {
 
 		$counter = pack('N*', $counterInt & 0xFFFFFFFF00000000) 
 		         . pack('N*', $counterInt & 0x00000000FFFFFFFF);
-		return self::HOTP($key, $counter, $digits, $algorithm);
+		return self::HOTP($key, $counter, compact('digits', 'algorithm'));
 	}
 	/**
 	 * HMAC-Based One-Time Password Algorithm
@@ -43,7 +43,12 @@ class OTP {
 	 * [@param $algorithm = 'sha1'] HMAC algorithm - sha1, sha256, and sha512 permitted
 	 * @return string n-character numeric code
 	 */
-	public static function HOTP($key, $counter, $digits = 6, $algorithm = 'sha1') {
+	public static function HOTP($key, $counter, array $options = array()) {
+		// Parse options
+		$digits = 6;
+		$algorithm = 'sha1';
+		extract($options);
+
 		if ($digits < 6) {
 			throw new Exception('RFC4226 requires a minimum of six-digit output');
 		}
