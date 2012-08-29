@@ -37,9 +37,10 @@ class OTP {
 
 		$hash = hash_hmac($algorithm, $binaryCounter, $binaryKey, true);
 		$offset = ord(substr($hash, -1)) & 0xF;
-		$truncated = substr($hash, $offset, 4);
-		extract(unpack('Nnum', $truncated));
-		$noMSB = $num & 0x7FFFFFFF;
+		$noMSB = ((ord($hash[$offset + 0]) & 0x7F) << 24)
+		       | ((ord($hash[$offset + 1]) & 0xFF) << 16)
+		       | ((ord($hash[$offset + 2]) & 0xFF) << 8)
+		       | ((ord($hash[$offset + 3]) & 0xFF) << 0);
 		$code = $noMSB % pow(10, $digits);
 		return str_pad($code, $digits, '0', STR_PAD_LEFT);
 	}
