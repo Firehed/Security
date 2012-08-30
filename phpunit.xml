@@ -2,7 +2,7 @@
 <phpunit>
 	<testsuites>
 		<testsuite name="OTP">
-			<file>Tests/testOTP.php</file>
+			<directory>Tests/OTP</directory>
 		</testsuite>
 	</testsuites>
 </phpunit>
