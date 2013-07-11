@@ -1,0 +1,19 @@
+{
+	"name": "firehed/security",
+	"description": "Security tools for PHP",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Eric Stern",
+			"email": "eric@ericstern.com"
+		}
+	],
+	"require": {
+
+	},
+	"autoload":
+		{ "psr-0":
+			{ "Firehed\\Security": "src/"
+			}
+		}
+}

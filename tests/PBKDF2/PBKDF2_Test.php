@@ -1,6 +1,6 @@
 <?php
 use Firehed\Security\PBKDF2;
-require_once 'PBKDF2.php';
+require_once 'vendor/autoload.php';
 
 class PBKDF2_Tests extends PHPUnit_Framework_TestCase {
 

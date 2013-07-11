@@ -1,6 +1,6 @@
 <?php
 use Firehed\Security\OTP;
-require_once 'OTP.php';
+require_once 'vendor/autoload.php';
 
 class TOTP_Tests extends PHPUnit_Framework_TestCase {
 
