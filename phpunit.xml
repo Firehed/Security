@@ -4,5 +4,8 @@
 		<testsuite name="OTP">
 			<directory>Tests/OTP</directory>
 		</testsuite>
+		<testsuite name="PBKDF2">
+			<directory>Tests/PBKDF2</directory>
+		</testsuite>
 	</testsuites>
 </phpunit>
