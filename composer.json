@@ -12,8 +12,8 @@
 
 	},
 	"autoload":
-		{ "psr-0":
-			{ "Firehed\\Security": "src/"
+		{ "psr-4":
+			{ "Firehed\\Security\\": ["src/", "tests/"]
 			}
 		}
 }
