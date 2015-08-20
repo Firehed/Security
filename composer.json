@@ -1,19 +1,23 @@
 {
-	"name": "firehed/security",
-	"description": "Security tools for PHP",
-	"license": "MIT",
-	"authors": [
-		{
-			"name": "Eric Stern",
-			"email": "eric@ericstern.com"
-		}
-	],
-	"require": {
+    "name": "firehed/security",
+    "description": "Security tools for PHP",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eric Stern",
+            "email": "eric@ericstern.com"
+        }
+    ],
+    "require": {
 
-	},
-	"autoload":
-		{ "psr-4":
-			{ "Firehed\\Security\\": ["src/", "tests/"]
-			}
-		}
+    },
+    "require-dev": {
+        "firehed/arctools": "^1",
+        "phpunit/phpunit": "~4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Firehed\\Security\\": ["src/", "tests/"]
+        }
+    }
 }
