@@ -2,6 +2,8 @@
 declare(strict_types=1);
 
 namespace Firehed\Security;
+use Exception;
+
 
 /**
  * HMAC-Based One-Time Password Algorithm
@@ -33,12 +35,15 @@ function HOTP(
     }
 
     $hash = hash_hmac($algorithm, $counter, $key->reveal(), true);
+    // Determine the offset: get the last nibble of the hash output
     $offset = ord(substr($hash, -1)) & 0xF;
-    $noMSB = ((ord($hash[$offset + 0]) & 0x7F) << 24)
-           | ((ord($hash[$offset + 1]) & 0xFF) << 16)
-           | ((ord($hash[$offset + 2]) & 0xFF) << 8)
-           | ((ord($hash[$offset + 3]) & 0xFF) << 0);
-    $code = (string) ($noMSB % pow(10, $digits));
-    return str_pad($code, $digits, '0', STR_PAD_LEFT);
+    // Index into the hash output by $offset bytes, take four bytes
+    $dbc1 = unpack('N', substr($hash, $offset, 4))[1];
+    // Mask out the high bit (per the spec, avoids signed/unsigned issues)
+    $dbc2 = $dbc1 & 0x7FFFFFFF;
+    // Use the last $digits by using modulo 10^digits
+    $code = (string) ($dbc2 % pow(10, $digits));
+    // Finally, prepend zeroes to match the string length
+    return str_pad($code, $digits, '0', \STR_PAD_LEFT);
 }
 
