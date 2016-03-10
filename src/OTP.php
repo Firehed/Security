@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Firehed\Security;
 
@@ -20,7 +21,7 @@ class OTP {
 	 * [@param $algorithm = 'sha1'] HMAC algorithm - sha1, sha256, and sha512 permitted
 	 * @return string n-character numeric code
 	 */
-	public static function TOTP($key, array $options = array()) {
+	public static function TOTP(string $key, array $options = array()): string {
 		// Parse options
 		$step      = 30;
 		$offset    = 0;
@@ -43,7 +44,7 @@ class OTP {
 	 * [@param $algorithm = 'sha1'] HMAC algorithm - sha1, sha256, and sha512 permitted
 	 * @return string n-character numeric code
 	 */
-	public static function HOTP($key, $counter, array $options = array()) {
+	public static function HOTP(string $key, string $counter, array $options = array()): string {
 		// Parse options
 		$digits = 6;
 		$algorithm = 'sha1';
@@ -65,7 +66,7 @@ class OTP {
 		       | ((ord($hash[$offset + 1]) & 0xFF) << 16)
 		       | ((ord($hash[$offset + 2]) & 0xFF) << 8)
 		       | ((ord($hash[$offset + 3]) & 0xFF) << 0);
-		$code = $noMSB % pow(10, $digits);
+		$code = (string) ($noMSB % pow(10, $digits));
 		return str_pad($code, $digits, '0', STR_PAD_LEFT);
 	}
 }
