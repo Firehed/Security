@@ -27,7 +27,7 @@ class OTP {
 		$offset    = 0;
 		$digits    = 6;
 		$algorithm = 'sha1';
-		extract($options);
+		extract($options, \EXTR_IF_EXISTS);
 
 		$counterInt = floor(($_SERVER['REQUEST_TIME'] - $offset) / $step);
 
@@ -47,7 +47,7 @@ class OTP {
 		// Parse options
 		$digits = 6;
 		$algorithm = 'sha1';
-		extract($options);
+		extract($options, \EXTR_IF_EXISTS);
 
 		if ($digits < 6) {
 			throw new Exception('RFC4226 requires a minimum of six-digit output');
