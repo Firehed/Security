@@ -3,12 +3,7 @@ declare(strict_types=1);
 
 namespace Firehed\Security;
 
-/**
- * @coversDefaultClass Firehed\Security\OTP
- * @covers ::<protected>
- * @covers ::<private>
- */
-class OTPTests extends \PHPUnit_Framework_TestCase
+class TOTPTest extends \PHPUnit_Framework_TestCase
 {
 
     // Test vectors provided by RFC 6238, Appendix B
@@ -43,7 +38,7 @@ class OTPTests extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::TOTP
+     * @covers Firehed\Security\TOTP
      * @dataProvider TOTPvectors
      */
     public function testTOTPVectors(
