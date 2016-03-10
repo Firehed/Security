@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Firehed\Security;
 
@@ -28,14 +29,14 @@ final class Secret {
     /**
      * @param string The secret to obscure
      */
-    public function __construct($string) {
+    public function __construct(string $string) {
         $this->value = $this->mask($string, SecretKey::getKey());
     }
 
     /**
      * @return string The original secret
      */
-    public function reveal() {
+    public function reveal(): string {
         return $this->mask($this->value, SecretKey::getKey());
     }
 
@@ -43,11 +44,11 @@ final class Secret {
      * @return string A hardcoded string, "<secret>", so that the actual secret
      * is not accidentally revealed.
      */
-    public function __toString() {
+    public function __toString(): string {
         return '<secret>';
     }
 
-    public function __debugInfo() {
+    public function __debugInfo(): array {
         return ['secret' => '<secret>'];
     }
 
@@ -56,7 +57,7 @@ final class Secret {
      * @param string The mask
      * @return string The obfuscated or deobfuscated string
      */
-    private function mask($string, $noise) {
+    private function mask(string $string, string $noise): string {
         $result = '';
         for ($ii = 0; $ii < strlen($string); $ii++) {
             $s = $string[$ii];
