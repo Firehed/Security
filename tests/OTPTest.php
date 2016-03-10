@@ -1,11 +1,17 @@
 <?php
-use Firehed\Security\OTP;
-require_once 'vendor/autoload.php';
+declare(strict_types=1);
 
-class OTP_Tests extends PHPUnit_Framework_TestCase {
+namespace Firehed\Security;
+
+/**
+ * @coversDefaultClass Firehed\Security\OTP
+ * @covers ::<protected>
+ * @covers ::<private>
+ */
+class OTPTests extends \PHPUnit_Framework_TestCase {
 
 	// Test vectors provided by RFC 6238, Appendix B
-	function TOTPvectors() {
+	public function TOTPvectors(): array {
 		// It's unclear that the token is of varying length based on the 
 		// algoritm being used, but that's definitely the case
 		$base = str_repeat('1234567890', 10);
@@ -35,9 +41,10 @@ class OTP_Tests extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
+     * @covers ::TOTP
 	 * @dataProvider TOTPvectors
 	 */
-	function testTOTPVectors($ts, $expectedOut, $algo, $tok) {
+	function testTOTPVectors(int $ts, string $expectedOut, string $algo, string $tok) {
 		$_SERVER['REQUEST_TIME'] = $ts;
 		$this->assertSame($expectedOut, OTP::TOTP($tok, array('digits' => strlen($expectedOut), 'algorithm' => $algo)));
 	}
