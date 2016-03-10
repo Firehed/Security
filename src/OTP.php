@@ -31,8 +31,7 @@ class OTP {
 
 		$counterInt = floor(($_SERVER['REQUEST_TIME'] - $offset) / $step);
 
-		$counter = pack('N*', $counterInt & 0xFFFFFFFF00000000) 
-		         . pack('N*', $counterInt & 0x00000000FFFFFFFF);
+        $counter = pack('J', $counterInt);
 		return self::HOTP($key, $counter, compact('digits', 'algorithm'));
 	}
 	/**
