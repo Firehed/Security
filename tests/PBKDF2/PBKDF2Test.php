@@ -35,7 +35,14 @@ class PBKDF2_Tests extends PHPUnit_Framework_TestCase {
 	 */
 	function testVectors($PRF, $password, $salt, $count, $dkLen, $expectedOutHex) {;
 		$expectedOutHex = str_replace(' ', '', $expectedOutHex);
-		$this->assertSame($expectedOutHex, PBKDF2::generateKey($PRF, $password, $salt, $count, $dkLen * 8, false));
+        $actualHex = PBKDF2::generateKey($PRF, $password, $salt, $count, $dkLen * 8, false);
+        $this->assertSame($expectedOutHex, $actualHex, 'Hex output was wrong');
+
+        $expectedBin = hex2bin($expectedOutHex);
+        $actualBin = PBKDF2::generateKey($PRF, $password, $salt, $count, $dkLen * 8, true);
+        $this->assertSame($expectedBin, $actualBin, 'Binary output was wrong');
+
+        $this->assertSame($dkLen, strlen($actualBin), "Wrong length");
 	}
 
 }
