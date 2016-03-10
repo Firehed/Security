@@ -17,13 +17,9 @@ use Exception;
 function HOTP(
     Secret $key,
     string $counter,
-    array $options = []
+    int $digits = 6,
+    string $algorithm = 'sha1'
 ): string {
-    // Parse options
-    $digits = 6;
-    $algorithm = 'sha1';
-    extract($options, \EXTR_IF_EXISTS);
-
     if ($digits < 6) {
         throw new Exception('RFC4226 requires a minimum of six-digit output');
     }

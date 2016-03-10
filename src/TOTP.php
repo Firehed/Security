@@ -25,6 +25,6 @@ function TOTP(Secret $key, array $options = []): string
     $counterInt = floor(($_SERVER['REQUEST_TIME'] - $offset) / $step);
 
     $counter = pack('J', $counterInt);
-    return HOTP($key, $counter, compact('digits', 'algorithm'));
+    return HOTP($key, $counter, $digits, $algorithm);
 }
 
