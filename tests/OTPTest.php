@@ -55,7 +55,7 @@ class OTPTests extends \PHPUnit_Framework_TestCase
         $_SERVER['REQUEST_TIME'] = $ts;
         $this->assertSame(
             $expectedOut,
-            OTP::TOTP(
+            TOTP(
                 $key,
                 ['digits' => strlen($expectedOut), 'algorithm' => $algo]
             ),

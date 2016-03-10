@@ -18,6 +18,10 @@
     "autoload": {
         "psr-4": {
             "Firehed\\Security\\": ["src/", "tests/"]
-        }
+        },
+        "files": [
+            "src/HOTP.php",
+            "src/TOTP.php"
+        ]
     }
 }
