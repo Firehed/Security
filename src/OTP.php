@@ -21,7 +21,7 @@ class OTP {
 	 * [@param $algorithm = 'sha1'] HMAC algorithm - sha1, sha256, and sha512 permitted
 	 * @return string n-character numeric code
 	 */
-	public static function TOTP(string $key, array $options = array()): string {
+	public static function TOTP(string $key, array $options = []): string {
 		// Parse options
 		$step      = 30;
 		$offset    = 0;
@@ -43,7 +43,7 @@ class OTP {
 	 * [@param $algorithm = 'sha1'] HMAC algorithm - sha1, sha256, and sha512 permitted
 	 * @return string n-character numeric code
 	 */
-	public static function HOTP(string $key, string $counter, array $options = array()): string {
+	public static function HOTP(string $key, string $counter, array $options = []): string {
 		// Parse options
 		$digits = 6;
 		$algorithm = 'sha1';
