@@ -15,6 +15,14 @@ class PBKDF2 {
 	// no standard library exists for this until PHP 5.4 (hash_pbkdf2)
 
 	public static function generateKey($PRF, $password, $salt, $count, $bits, $raw = false) {
+        if (function_exists('hash_pbkdf2')) {
+            if ($raw) {
+                $len = $bits / 8;
+            } else {
+                $len = $bits / 4;
+            }
+            return hash_pbkdf2($PRF, $password, $salt, $count, $len, $raw);
+        }
 		// Key length sanity check
 		if (!$bits || ($bits % 8)) {
 			throw new Exception("Key length in bits must be a multiple of 8");
