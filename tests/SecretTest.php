@@ -42,4 +42,33 @@ class SecretTest extends \PHPUnit_Framework_TestCase
             'The cast value was not masked correctly');
     } // testToString
 
+    /**
+     * @covers ::__debugInfo
+     */
+    public function testSecretIsHiddenFromPrintR() {
+        if (version_compare(PHP_VERSION, '5.6.0', '<')) {
+            $this->markTestSkipped('__debugInfo was not added until 5.6');
+        }
+        $test_string = md5(time());
+        $secret = new Secret($test_string);
+        $dumped = print_r($secret, true);
+        $this->assertNotContains($test_string, $dumped,
+            'print_r revealed the secret');
+    }
+
+    /**
+     * @covers ::__debugInfo
+     */
+    public function testSecretIsHiddenFromVarDump() {
+        if (version_compare(PHP_VERSION, '5.6.0', '<')) {
+            $this->markTestSkipped('__debugInfo was not added until 5.6');
+        }
+        $test_string = md5(time());
+        $secret = new Secret($test_string);
+        ob_start();
+        var_dump($secret);
+        $dumped = ob_get_clean();
+        $this->assertNotContains($test_string, $dumped,
+            'var_dump revealed the secret');
+    }
 }

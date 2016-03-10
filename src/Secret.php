@@ -47,6 +47,10 @@ final class Secret {
         return '<secret>';
     }
 
+    public function __debugInfo() {
+        return ['secret' => '<secret>'];
+    }
+
     /**
      * @param string The string to obfuscate or deobfuscate
      * @param string The mask
