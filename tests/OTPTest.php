@@ -17,9 +17,9 @@ class OTPTests extends \PHPUnit_Framework_TestCase
         // It's unclear that the token is of varying length based on the
         // algoritm being used, but that's definitely the case
         $base = str_repeat('1234567890', 10);
-        $tok_sha1   = substr($base, 0, 20);
-        $tok_sha256 = substr($base, 0, 32);
-        $tok_sha512 = substr($base, 0, 64);
+        $tok_sha1   = new Secret(substr($base, 0, 20));
+        $tok_sha256 = new Secret(substr($base, 0, 32));
+        $tok_sha512 = new Secret(substr($base, 0, 64));
         return [
             [         59, '94287082', 'sha1'  , $tok_sha1  ],
             [         59, '46119246', 'sha256', $tok_sha256],
@@ -50,13 +50,13 @@ class OTPTests extends \PHPUnit_Framework_TestCase
         int $ts,
         string $expectedOut,
         string $algo,
-        string $tok
+        Secret $key
     ) {
         $_SERVER['REQUEST_TIME'] = $ts;
         $this->assertSame(
             $expectedOut,
             OTP::TOTP(
-                $tok,
+                $key,
                 ['digits' => strlen($expectedOut), 'algorithm' => $algo]
             ),
             'TOTP output was incorrect');

@@ -22,7 +22,7 @@ class OTP
      * [@param $algorithm = 'sha1'] HMAC algorithm - sha1, sha256, and sha512 permitted
      * @return string n-character numeric code
      */
-    public static function TOTP(string $key, array $options = []): string
+    public static function TOTP(Secret $key, array $options = []): string
     {
         // Parse options
         $step      = 30;
@@ -46,7 +46,7 @@ class OTP
      * @return string n-character numeric code
      */
     public static function HOTP(
-        string $key,
+        Secret $key,
         string $counter,
         array $options = []
     ): string {
@@ -61,11 +61,11 @@ class OTP
         if (strlen($counter) != 8) {
             throw new Exception('Counter must be 8 bytes long');
         }
-        if (strlen($key) < 128 / 8) {
+        if (strlen($key->reveal()) < 128 / 8) {
             throw new Exception('Key must be at least 128 bits long (160+ recommended)');
         }
 
-        $hash = hash_hmac($algorithm, $counter, $key, true);
+        $hash = hash_hmac($algorithm, $counter, $key->reveal(), true);
         $offset = ord(substr($hash, -1)) & 0xF;
         $noMSB = ((ord($hash[$offset + 0]) & 0x7F) << 24)
                | ((ord($hash[$offset + 1]) & 0xFF) << 16)
