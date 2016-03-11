@@ -59,9 +59,10 @@ final class Secret {
      */
     private function mask(string $string, string $noise): string {
         $result = '';
-        for ($ii = 0; $ii < strlen($string); $ii++) {
+        $len = mb_strlen($string, '8bit');
+        for ($ii = 0; $ii < $len; $ii++) {
             $s = $string[$ii];
-            $n = $noise[$ii % strlen($noise)];
+            $n = $noise[$ii % $len];
 
             $result .= chr(ord($s) ^ ord($n));
         }
