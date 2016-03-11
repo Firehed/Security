@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-
+        "php": ">=7"
     },
     "require-dev": {
         "firehed/arctools": "^1",
