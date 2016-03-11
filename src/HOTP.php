@@ -24,11 +24,15 @@ function HOTP(
     if (!in_array($algorithm, ['sha1', 'sha256', 'sha512'])) {
         throw new OutOfRangeException('Unexpected algorithm');
     }
-    if ($digits < 6) {
-        throw new LengthException('RFC4226 requires a minimum of six-digit output');
+    if ($digits < 6 || $digits > 8) {
+        // "Implementations MUST extract a 6-digit code at a minimum and
+        // possibly 7 and 8-digit code."
+        throw new LengthException(
+            'RFC4226 requires a 6 to 8-digit output');
     }
     if (strlen($key->reveal()) < 128 / 8) {
-        throw new LengthException('Key must be at least 128 bits long (160+ recommended)');
+        throw new LengthException(
+            'Key must be at least 128 bits long (160+ recommended)');
     }
 
     $counter = pack('J', $counter); // Convert to 8-byte string
