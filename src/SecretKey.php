@@ -20,10 +20,7 @@ final class SecretKey {
             // is obfuscation only. This just ensures garbage rather than
             // sensitive data appears in logs, and is NOT a replacement for
             // encryption.
-            self::$key = '';
-            for ($ii = 0; $ii < 8; $ii++) {
-                self::$key .= md5((string)mt_rand(), $raw_output = true);
-            }
+            self::$key = random_bytes(128);
         }
         return self::$key;
     }
