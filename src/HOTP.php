@@ -2,8 +2,9 @@
 declare(strict_types=1);
 
 namespace Firehed\Security;
-use Exception;
 
+use LengthException;
+use OutOfRangeException;
 
 /**
  * HMAC-Based One-Time Password Algorithm
@@ -16,19 +17,21 @@ use Exception;
  */
 function HOTP(
     Secret $key,
-    string $counter,
+    int $counter,
     int $digits = 6,
     string $algorithm = 'sha1'
 ): string {
-    if ($digits < 6) {
-        throw new Exception('RFC4226 requires a minimum of six-digit output');
+    if (!in_array($algorithm, ['sha1', 'sha256', 'sha512'])) {
+        throw new OutOfRangeException('Unexpected algorithm');
     }
-    if (strlen($counter) != 8) {
-        throw new Exception('Counter must be 8 bytes long');
+    if ($digits < 6) {
+        throw new LengthException('RFC4226 requires a minimum of six-digit output');
     }
     if (strlen($key->reveal()) < 128 / 8) {
-        throw new Exception('Key must be at least 128 bits long (160+ recommended)');
+        throw new LengthException('Key must be at least 128 bits long (160+ recommended)');
     }
+
+    $counter = pack('J', $counter); // Convert to 8-byte string
 
     $hash = hash_hmac($algorithm, $counter, $key->reveal(), true);
     // Determine the offset: get the last nibble of the hash output

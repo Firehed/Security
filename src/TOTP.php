@@ -22,9 +22,8 @@ function TOTP(Secret $key, array $options = []): string
     $algorithm = 'sha1';
     extract($options, \EXTR_IF_EXISTS);
 
-    $counterInt = floor(($_SERVER['REQUEST_TIME'] - $offset) / $step);
+    $counter = (int)floor(($_SERVER['REQUEST_TIME'] - $offset) / $step);
 
-    $counter = pack('J', $counterInt);
     return HOTP($key, $counter, $digits, $algorithm);
 }
 
