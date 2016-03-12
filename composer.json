@@ -15,6 +15,10 @@
         "firehed/arctools": "^1",
         "phpunit/phpunit": "~5"
     },
+    "suggest": {
+        "paragonie/constant_time_encoding":
+            "Contains a secure base32-encoder, useful for generating QRCodes for TOTP registration"
+    },
     "autoload": {
         "psr-4": {
             "Firehed\\Security\\": ["src/", "tests/"]
