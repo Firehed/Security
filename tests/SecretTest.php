@@ -71,4 +71,17 @@ class SecretTest extends \PHPUnit_Framework_TestCase
         $this->assertNotContains($test_string, $dumped,
             'var_dump revealed the secret');
     }
+
+    /**
+     * @covers ::__construct
+     * @covers ::reveal
+     */
+    public function testMaskingStringLongerThanNoiseLength()
+    {
+        $noise = SecretKey::getKey();
+        $noise_length = mb_strlen($noise, '8bit');
+        $string = str_repeat('asdf', $noise_length);
+        $secret = new Secret($string);
+        $this->assertSame($string, $secret->reveal(), 'Secret was destroyed');
+    }
 }
