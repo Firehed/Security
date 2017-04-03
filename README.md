@@ -10,7 +10,7 @@ The API is very simple:
 
     $masked_string = new Firehed\Security\Secret('string to mask');
 
-    $unmaked_string = $masked_string->reveal();
+    $unmasked_string = $masked_string->reveal();
 
 Any other method of getting at the underlying value will be either `"<secret>"` (where export detection is possible) or the masked value (likely binary garbage).
 
