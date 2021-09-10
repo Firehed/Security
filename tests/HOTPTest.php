@@ -52,6 +52,7 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
             new Secret('abcdefgijklmnopqrstuvwxyz'),
             0x1234567890123456,
             6,
+            // @phpstan-ignore-next-line (testing type mismatch)
             'notalg'
         );
     }
