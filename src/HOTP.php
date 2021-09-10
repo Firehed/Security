@@ -15,7 +15,7 @@ if (!function_exists('Firehed\Security\HOTP')) {
      *
      * @param Secret $key shared secret, treated as binary
      * @param int $counter 8-byte counter
-     * @param int $digits = 6 Length of the output code
+     * @param int<6, 8> $digits = 6 Length of the output code
      * @param 'sha1'|'sha256'|'sha512' $algorithm = 'sha1' HMAC algorithm
      *
      * @return string n-character numeric code

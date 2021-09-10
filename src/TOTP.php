@@ -14,7 +14,7 @@ if (!function_exists('Firehed\Security\TOTP')) {
      * @param array{
      *   step?: int,
      *   offset?: int,
-     *   digits?: int,
+     *   digits?: int<6, 8>,
      *   algorithm?: 'sha1'|'sha256'|'sha512',
      * } $options
      *
