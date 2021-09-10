@@ -26,6 +26,7 @@ if (!function_exists('Firehed\Security\HOTP')) {
         int $digits = 6,
         string $algorithm = 'sha1'
     ): string {
+        // @phpstan-ignore-next-line (force-block type mismatch)
         if (!in_array($algorithm, ['sha1', 'sha256', 'sha512'], true)) {
             throw new OutOfRangeException('Unexpected algorithm');
         }
@@ -44,13 +45,23 @@ if (!function_exists('Firehed\Security\HOTP')) {
 
         $counter = pack('J', $counter); // Convert to 8-byte string
 
+        // 5.3 Step 1: Generate hash value
         $hash = hash_hmac($algorithm, $counter, $key->reveal(), true);
+
+        // 5.3 Step 2: Dynamic truncation
         // Determine the offset: get the last nibble of the hash output
         $offset = ord(substr($hash, -1)) & 0xF;
-        // Index into the hash output by $offset bytes, take four bytes
-        $dbc1 = unpack('N', substr($hash, $offset, 4))[1];
+        // Take four bytes from the hash starting at the given offset
+        $bytes = substr($hash, $offset, 4);
+        // Parse those bytes as an unsigned 32-bit integer into the "Dynamic
+        // Binary Code"
+        $parsed = unpack('N', $bytes);
+        assert($parsed !== false);
+        $dbc1 = $parsed[1];
         // Mask out the high bit (per the spec, avoids signed/unsigned issues)
         $dbc2 = $dbc1 & 0x7FFFFFFF;
+
+        // 5.3 Step 3: Compute HOTP value
         // Use the last $digits by using modulo 10^digits
         $code = (string) ($dbc2 % pow(10, $digits));
         // Finally, prepend zeroes to match the string length
