@@ -8,7 +8,13 @@
         "hidden",
         "masked",
         "sensitive",
-        "password"
+        "password",
+        "authenticator",
+        "authy",
+        "totp",
+        "hotp",
+        "rfc4226",
+        "rfc6238"
     ],
     "license": "MIT",
     "authors": [
@@ -32,12 +38,17 @@
     },
     "autoload": {
         "psr-4": {
-            "Firehed\\Security\\": ["src/", "tests/"]
+            "Firehed\\Security\\": "src/"
         },
         "files": [
             "src/HOTP.php",
             "src/TOTP.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Firehed\\Security\\": "tests/"
+        }
     },
     "scripts": {
         "test": [
