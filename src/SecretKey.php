@@ -10,7 +10,7 @@ namespace Firehed\Security;
  */
 final class SecretKey
 {
-
+    /** @var string */
     private static $key;
 
     // Private constructor: only access is allowed through getKey()
