@@ -23,7 +23,9 @@
     "require-dev": {
         "firehed/arctools": "^1",
         "phpunit/phpunit": "~5",
-        "squizlabs/php_codesniffer": "^3.6"
+        "squizlabs/php_codesniffer": "^3.6",
+        "phpstan/phpstan": "^0.12.98",
+        "phpstan/phpstan-strict-rules": "^0.12.11"
     },
     "suggest": {
         "paragonie/constant_time_encoding":
@@ -39,6 +41,7 @@
         ]
     },
     "scripts": {
-        "phpcs": "phpcs"
+        "phpcs": "phpcs",
+        "phpstan": "phpstan analyse"
     }
 }
