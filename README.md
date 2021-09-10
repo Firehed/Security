@@ -125,8 +125,18 @@ You probably will not need to use this directly, since most user-facing OTP
 applications are based on the TOTP protocol (see below). However, for
 reference, the API is as follows:
 
-    namespace Firehed\Security;
-    function HOTP(Secret $key, int $counter, int $digits = 6, string $algorithm = 'sha1'): string
+```php
+// Preferred: Object-oriented
+
+$otp = new \Firehed\Security\OTP(Secret $secret);
+$code = $otp->getHOTP(int $counter, int $digits = 6, string $algorithm = OTP::ALGORITHM_SHA1);
+
+// Legacy: function-based
+
+$code = \Firehed\Security\HOTP(Secret $key, int $counter, int $digits = 6, string $algorithm = 'sha1');
+```
+
+Detailed parameter documentation is on the OTP class.
 
 ### TOTP: Time-based One Time Password (RFC 6238)
 
