@@ -8,6 +8,7 @@ use DomainException;
 use LengthException;
 
 use function assert;
+use function floor;
 use function hash_hmac;
 use function ord;
 use function pack;
@@ -72,6 +73,20 @@ class OTP
         $code = (string) ($dbc % pow(10, $digits));
         // Finally, prepend zeroes to match the string length
         return str_pad($code, $digits, '0', \STR_PAD_LEFT);
+    }
+
+    /**
+     * @param int<6, 8> $digits
+     * @param self::ALGORITHM_* $algorithm
+     */
+    public function getTOTP(
+        int $step = 30,
+        int $t0 = 0,
+        int $digits = 6,
+        string $algorithm = self::ALGORITHM_SHA1
+    ): string {
+        $t = (int) floor(($_SERVER['REQUEST_TIME'] - $t0) / $step);
+        return $this->getHOTP($t, $digits, $algorithm);
     }
 
     /**

@@ -43,8 +43,6 @@ if (!function_exists('Firehed\Security\TOTP')) {
         $algorithm = 'sha1';
         extract($options, \EXTR_IF_EXISTS);
 
-        $counter = (int)floor(($_SERVER['REQUEST_TIME'] - $offset) / $step);
-
-        return HOTP($key, $counter, $digits, $algorithm);
+        return (new OTP($key))->getTOTP($step, $offset, $digits, $algorithm);
     }
 }
