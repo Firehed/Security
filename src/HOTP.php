@@ -10,10 +10,10 @@ use OutOfRangeException;
 /**
  * HMAC-Based One-Time Password Algorithm
  * @see RFC 4226
- * @param $key shared secret, treated as binary
- * @param $counter 8-byte counter
- * [@param $digits = 6] Length of the output code
- * [@param $algorithm = 'sha1'] HMAC algorithm - sha1, sha256, and sha512 permitted
+ * @param Secret $key shared secret, treated as binary
+ * @param int $counter 8-byte counter
+ * @param int $digits = 6 Length of the output code
+ * @param 'sha1'|'sha256'|'sha512' $algorithm = 'sha1' HMAC algorithm
  * @return string n-character numeric code
  */
 function HOTP(

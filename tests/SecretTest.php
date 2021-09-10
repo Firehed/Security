@@ -19,7 +19,7 @@ class SecretTest extends \PHPUnit_Framework_TestCase
             'Firehed\Security\Secret',
             new Secret('test')
         );
-    } // testConstruct
+    }
 
     /**
      * @covers ::reveal
@@ -33,7 +33,7 @@ class SecretTest extends \PHPUnit_Framework_TestCase
             $secret->reveal(),
             'The string was modified when the envelope opened'
         );
-    } // testOpenEnvelope
+    }
 
     /**
      * @covers ::__toString
@@ -48,7 +48,7 @@ class SecretTest extends \PHPUnit_Framework_TestCase
             $cast_output,
             'The cast value was not masked correctly'
         );
-    } // testToString
+    }
 
     /**
      * @covers ::__debugInfo
