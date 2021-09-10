@@ -40,6 +40,12 @@
         ]
     },
     "scripts": {
+        "test": [
+            "@phpunit",
+            "@phpstan",
+            "@phpcs"
+        ],
+        "phpunit": "phpunit",
         "phpcs": "phpcs",
         "phpstan": "phpstan analyse"
     }

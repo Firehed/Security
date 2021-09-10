@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Firehed\Security;
 
 /**
+ * @covers Firehed\Security\OTP
  * @covers Firehed\Security\HOTP
  */
 class HOTPTest extends \PHPUnit\Framework\TestCase
@@ -47,7 +48,7 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
 
     public function testBadAlgorithm(): void
     {
-        $this->expectException(\OutOfRangeException::class);
+        $this->expectException(\LogicException::class);
         HOTP(
             new Secret('abcdefgijklmnopqrstuvwxyz'),
             0x1234567890123456,
@@ -63,6 +64,7 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
         HOTP(
             new Secret('abcdefgijklmnopqrstuvwxyz'),
             0x1234567890123456,
+            // @phpstan-ignore-next-line validation check
             4
         );
     }
@@ -73,6 +75,7 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
         HOTP(
             new Secret('abcdefgijklmnopqrstuvwxyz'),
             0x1234567890123456,
+            // @phpstan-ignore-next-line validation check
             9
         );
     }
