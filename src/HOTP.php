@@ -7,11 +7,6 @@ namespace Firehed\Security;
 use LengthException;
 use OutOfRangeException;
 
-if (function_exists('Firehed\Security\HOTP')) {
-    error_log((string)new \Exception);
-    return;
-}
-
 /**
  * HMAC-Based One-Time Password Algorithm
  * @see RFC 4226
