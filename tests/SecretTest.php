@@ -61,7 +61,7 @@ class SecretTest extends \PHPUnit\Framework\TestCase
         $test_string = md5(time());
         $secret = new Secret($test_string);
         $dumped = print_r($secret, true);
-        $this->assertNotContains(
+        $this->assertStringNotContainsString(
             $test_string,
             $dumped,
             'print_r revealed the secret'
@@ -81,7 +81,7 @@ class SecretTest extends \PHPUnit\Framework\TestCase
         ob_start();
         var_dump($secret);
         $dumped = ob_get_clean();
-        $this->assertNotContains(
+        $this->assertStringNotContainsString(
             $test_string,
             $dumped,
             'var_dump revealed the secret'
