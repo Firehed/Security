@@ -46,6 +46,7 @@ class TOTPTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider TOTPvectors
+     * @param 'sha1'|'sha256'|'sha512' $algo
      */
     public function testTOTPVectors(
         int $ts,
