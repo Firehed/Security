@@ -40,9 +40,6 @@ class SecretTest extends \PHPUnit\Framework\TestCase
 
     public function testSecretIsHiddenFromPrintR(): void
     {
-        if (version_compare(PHP_VERSION, '5.6.0', '<')) {
-            $this->markTestSkipped('__debugInfo was not added until 5.6');
-        }
         $test_string = md5(time());
         $secret = new Secret($test_string);
         $dumped = print_r($secret, true);
@@ -55,9 +52,6 @@ class SecretTest extends \PHPUnit\Framework\TestCase
 
     public function testSecretIsHiddenFromVarDump(): void
     {
-        if (version_compare(PHP_VERSION, '5.6.0', '<')) {
-            $this->markTestSkipped('__debugInfo was not added until 5.6');
-        }
         $test_string = md5(time());
         $secret = new Secret($test_string);
         ob_start();
