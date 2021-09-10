@@ -1,7 +1,0 @@
-{
-    "unit.engine": "Firehed\\Arctools\\Unit\\PHPUnitTestEngine",
-    "unit.phpunit.binary": "vendor/bin/phpunit",
-    "load": [
-        "vendor/firehed/arctools/src"
-    ]
-}
