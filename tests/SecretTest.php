@@ -3,28 +3,19 @@
 namespace Firehed\Security;
 
 /**
- * @coversDefaultClass Firehed\Security\Secret
- * @covers ::<protected>
- * @covers ::<private>
+ * @covers Firehed\Security\Secret
  */
-class SecretTest extends \PHPUnit_Framework_TestCase
+class SecretTest extends \PHPUnit\Framework\TestCase
 {
-
-    /**
-     * @covers ::__construct
-     */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $this->assertInstanceOf(
-            'Firehed\Security\Secret',
+            Secret::class,
             new Secret('test')
         );
     }
 
-    /**
-     * @covers ::reveal
-     */
-    public function testOpenEnvelope()
+    public function testOpenEnvelope(): void
     {
         $test_string = md5(time());
         $secret = new Secret($test_string);
@@ -35,10 +26,7 @@ class SecretTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers ::__toString
-     */
-    public function testToString()
+    public function testToString(): void
     {
         $test_string = md5(time());
         $secret = new Secret($test_string);
@@ -50,49 +38,33 @@ class SecretTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers ::__debugInfo
-     */
-    public function testSecretIsHiddenFromPrintR()
+    public function testSecretIsHiddenFromPrintR(): void
     {
-        if (version_compare(PHP_VERSION, '5.6.0', '<')) {
-            $this->markTestSkipped('__debugInfo was not added until 5.6');
-        }
         $test_string = md5(time());
         $secret = new Secret($test_string);
         $dumped = print_r($secret, true);
-        $this->assertNotContains(
+        $this->assertStringNotContainsString(
             $test_string,
             $dumped,
             'print_r revealed the secret'
         );
     }
 
-    /**
-     * @covers ::__debugInfo
-     */
-    public function testSecretIsHiddenFromVarDump()
+    public function testSecretIsHiddenFromVarDump(): void
     {
-        if (version_compare(PHP_VERSION, '5.6.0', '<')) {
-            $this->markTestSkipped('__debugInfo was not added until 5.6');
-        }
         $test_string = md5(time());
         $secret = new Secret($test_string);
         ob_start();
         var_dump($secret);
         $dumped = ob_get_clean();
-        $this->assertNotContains(
+        $this->assertStringNotContainsString(
             $test_string,
             $dumped,
             'var_dump revealed the secret'
         );
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::reveal
-     */
-    public function testMaskingStringLongerThanNoiseLength()
+    public function testMaskingStringLongerThanNoiseLength(): void
     {
         $noise = SecretKey::getKey();
         $noise_length = mb_strlen($noise, '8bit');

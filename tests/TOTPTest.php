@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Firehed\Security;
 
-class TOTPTest extends \PHPUnit_Framework_TestCase
+class TOTPTest extends \PHPUnit\Framework\TestCase
 {
 
     // Test vectors provided by RFC 6238, Appendix B
@@ -41,13 +41,14 @@ class TOTPTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Firehed\Security\TOTP
      * @dataProvider TOTPvectors
+     * @param 'sha1'|'sha256'|'sha512' $algo
      */
     public function testTOTPVectors(
         int $ts,
         string $expectedOut,
         string $algo,
         Secret $key
-    ) {
+    ): void {
         $_SERVER['REQUEST_TIME'] = $ts;
         $this->assertSame(
             $expectedOut,
