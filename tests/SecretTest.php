@@ -19,7 +19,7 @@ class SecretTest extends \PHPUnit\Framework\TestCase
 
     public function testOpenEnvelope(): void
     {
-        $test_string = md5(time());
+        $test_string = md5(random_bytes(10));
         $secret = new Secret($test_string);
         $this->assertSame(
             $test_string,
@@ -30,7 +30,7 @@ class SecretTest extends \PHPUnit\Framework\TestCase
 
     public function testToString(): void
     {
-        $test_string = md5(time());
+        $test_string = md5(random_bytes(10));
         $secret = new Secret($test_string);
         $cast_output = (string)$secret;
         $this->assertNotSame(
@@ -42,7 +42,7 @@ class SecretTest extends \PHPUnit\Framework\TestCase
 
     public function testSecretIsHiddenFromPrintR(): void
     {
-        $test_string = md5(time());
+        $test_string = md5(random_bytes(10));
         $secret = new Secret($test_string);
         $dumped = print_r($secret, true);
         $this->assertStringNotContainsString(
@@ -54,11 +54,12 @@ class SecretTest extends \PHPUnit\Framework\TestCase
 
     public function testSecretIsHiddenFromVarDump(): void
     {
-        $test_string = md5(time());
+        $test_string = md5(random_bytes(10));
         $secret = new Secret($test_string);
         ob_start();
         var_dump($secret);
         $dumped = ob_get_clean();
+        assert($dumped !== false);
         $this->assertStringNotContainsString(
             $test_string,
             $dumped,
