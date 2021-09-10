@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Firehed\Security;
 
 /**
+ * @covers Firehed\Security\OTP
  * @covers Firehed\Security\TOTP
  */
 class TOTPTest extends \PHPUnit\Framework\TestCase
@@ -54,12 +55,20 @@ class TOTPTest extends \PHPUnit\Framework\TestCase
         string $algo,
         Secret $key
     ): void {
-        $_SERVER['REQUEST_TIME'] = $ts;
+        // Note: this isn't really the intended use of T0, as it's really meant
+        // to adjust by a step or two for clock drift. However, it serves the
+        // intended purpose of offsetting the `T` value  _to_ the intended
+        // timestamp from the provided test vectors.
+        $t0 = time() - $ts;
         $this->assertSame(
             $expectedOut,
             TOTP(
                 $key,
-                ['digits' => strlen($expectedOut), 'algorithm' => $algo]
+                [
+                    'algorithm' => $algo,
+                    'digits' => 8, // strlen($expectedOut), all are the same
+                    'offset' => $t0,
+                ]
             ),
             'TOTP output was incorrect'
         );

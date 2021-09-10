@@ -64,6 +64,7 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
         HOTP(
             new Secret('abcdefgijklmnopqrstuvwxyz'),
             0x1234567890123456,
+            // @phpstan-ignore-next-line validation check
             4
         );
     }
@@ -74,6 +75,7 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
         HOTP(
             new Secret('abcdefgijklmnopqrstuvwxyz'),
             0x1234567890123456,
+            // @phpstan-ignore-next-line validation check
             9
         );
     }

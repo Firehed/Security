@@ -85,7 +85,7 @@ class OTP
         int $digits = 6,
         string $algorithm = self::ALGORITHM_SHA1
     ): string {
-        $t = (int) floor(($_SERVER['REQUEST_TIME'] - $t0) / $step);
+        $t = (int) floor((time() - $t0) / $step);
         return $this->getHOTP($t, $digits, $algorithm);
     }
 
