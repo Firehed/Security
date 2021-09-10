@@ -66,11 +66,30 @@ class OTP
         // 5.3 Step 1: Generate hash value
         $hash = hash_hmac($algorithm, $counter, $this->secret->reveal(), true);
 
-        // 5.3 Step 2: Dynamic truncation
-        // Determine the offset: get the last nibble of the hash output
-        $offset = ord(substr($hash, -1)) & 0xF;
+        $dbc = self::dynamicTruncate($hash);
+        // 5.3 Step 3: Compute HOTP value
+        // Use the last $digits by using modulo 10^digits
+        $code = (string) ($dbc % pow(10, $digits));
+        // Finally, prepend zeroes to match the string length
+        return str_pad($code, $digits, '0', \STR_PAD_LEFT);
+    }
+
+    /**
+     * Generate a 31-bit int using the dynamic truncation algorithm described
+     * in RFC 4226 section 5.3
+     */
+    private static function dynamicTruncate(string $binaryHash): int
+    {
+        // SHA-1 generates a 160-bit (20-byte) hash; others are longer. That
+        // length is necessary for the algorithm to work.
+        assert(strlen($binaryHash) >= 20);
+
+        $lastByte = substr($binaryHash, -1);
+        $offset = ord($lastByte) & 0x0F; // Lower 4 bits determine offset
+
         // Take four bytes from the hash starting at the given offset
-        $bytes = substr($hash, $offset, 4);
+        $bytes = substr($binaryHash, $offset, 4);
+        assert(strlen($bytes) === 4);
         // Parse those bytes as an unsigned 32-bit integer into the "Dynamic
         // Binary Code"
         $parsed = unpack('N', $bytes);
@@ -79,10 +98,6 @@ class OTP
         // Mask out the high bit (per the spec, avoids signed/unsigned issues)
         $dbc2 = $dbc1 & 0x7FFFFFFF;
 
-        // 5.3 Step 3: Compute HOTP value
-        // Use the last $digits by using modulo 10^digits
-        $code = (string) ($dbc2 % pow(10, $digits));
-        // Finally, prepend zeroes to match the string length
-        return str_pad($code, $digits, '0', \STR_PAD_LEFT);
+        return $dbc2;
     }
 }
