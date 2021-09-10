@@ -9,11 +9,10 @@ namespace Firehed\Security;
  */
 class SecretTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @covers ::__construct
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $this->assertInstanceOf(
             Secret::class,
@@ -24,7 +23,7 @@ class SecretTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::reveal
      */
-    public function testOpenEnvelope()
+    public function testOpenEnvelope(): void
     {
         $test_string = md5(time());
         $secret = new Secret($test_string);
@@ -38,7 +37,7 @@ class SecretTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__toString
      */
-    public function testToString()
+    public function testToString(): void
     {
         $test_string = md5(time());
         $secret = new Secret($test_string);
@@ -53,7 +52,7 @@ class SecretTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__debugInfo
      */
-    public function testSecretIsHiddenFromPrintR()
+    public function testSecretIsHiddenFromPrintR(): void
     {
         if (version_compare(PHP_VERSION, '5.6.0', '<')) {
             $this->markTestSkipped('__debugInfo was not added until 5.6');
@@ -71,7 +70,7 @@ class SecretTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__debugInfo
      */
-    public function testSecretIsHiddenFromVarDump()
+    public function testSecretIsHiddenFromVarDump(): void
     {
         if (version_compare(PHP_VERSION, '5.6.0', '<')) {
             $this->markTestSkipped('__debugInfo was not added until 5.6');
@@ -92,7 +91,7 @@ class SecretTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::reveal
      */
-    public function testMaskingStringLongerThanNoiseLength()
+    public function testMaskingStringLongerThanNoiseLength(): void
     {
         $noise = SecretKey::getKey();
         $noise_length = mb_strlen($noise, '8bit');
