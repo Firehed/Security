@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Firehed\Security;
@@ -54,7 +55,7 @@ class TOTPTest extends \PHPUnit_Framework_TestCase
                 $key,
                 ['digits' => strlen($expectedOut), 'algorithm' => $algo]
             ),
-            'TOTP output was incorrect');
+            'TOTP output was incorrect'
+        );
     }
-
 }

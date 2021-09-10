@@ -1,11 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Firehed\Security;
 
 class HOTPTest extends \PHPUnit_Framework_TestCase
 {
-
     // https://tools.ietf.org/html/rfc4226#page-32
     public function vectors(): array
     {
@@ -30,47 +30,62 @@ class HOTPTest extends \PHPUnit_Framework_TestCase
      */
     public function testHOTP(Secret $secret, int $counter, string $out)
     {
-        $this->assertSame($out, HOTP($secret, $counter),
-            'Wrong HOTP output');
+        $this->assertSame(
+            $out,
+            HOTP($secret, $counter),
+            'Wrong HOTP output'
+        );
     }
 
     /**
      * @covers \Firehed\Security\HOTP
      */
-    public function testBadAlgorithm() {
+    public function testBadAlgorithm()
+    {
         $this->expectException(\OutOfRangeException::class);
-        HOTP(new Secret('abcdefgijklmnopqrstuvwxyz'),
+        HOTP(
+            new Secret('abcdefgijklmnopqrstuvwxyz'),
             0x1234567890123456,
             6,
-            'notalg');
+            'notalg'
+        );
     }
 
     /**
      * @covers \Firehed\Security\HOTP
      */
-    public function testTooFewDigits() {
+    public function testTooFewDigits()
+    {
         $this->expectException(\LengthException::class);
-        HOTP(new Secret('abcdefgijklmnopqrstuvwxyz'),
+        HOTP(
+            new Secret('abcdefgijklmnopqrstuvwxyz'),
             0x1234567890123456,
-            4);
+            4
+        );
     }
 
     /**
      * @covers \Firehed\Security\HOTP
      */
-    public function testTooManyDigits() {
+    public function testTooManyDigits()
+    {
         $this->expectException(\LengthException::class);
-        HOTP(new Secret('abcdefgijklmnopqrstuvwxyz'),
+        HOTP(
+            new Secret('abcdefgijklmnopqrstuvwxyz'),
             0x1234567890123456,
-            9);
+            9
+        );
     }
 
     /**
      * @covers \Firehed\Security\HOTP
      */
-    public function testInvalidKeyLength() {
+    public function testInvalidKeyLength()
+    {
         $this->expectException(\LengthException::class);
-        HOTP(new Secret('123456789012345'),
-            0x1234567890123456);
+        HOTP(
+            new Secret('123456789012345'),
+            0x1234567890123456
+        );
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Firehed\Security;
@@ -19,7 +20,8 @@ namespace Firehed\Security;
  * from appearing in any sort of logs related to the envelope, even if the
  * logger is very aggressive.
  */
-final class Secret {
+final class Secret
+{
 
     /**
      * Obfuscated value
@@ -29,14 +31,16 @@ final class Secret {
     /**
      * @param string The secret to obscure
      */
-    public function __construct(string $string) {
+    public function __construct(string $string)
+    {
         $this->value = $this->mask($string, SecretKey::getKey());
     }
 
     /**
      * @return string The original secret
      */
-    public function reveal(): string {
+    public function reveal(): string
+    {
         return $this->mask($this->value, SecretKey::getKey());
     }
 
@@ -44,11 +48,13 @@ final class Secret {
      * @return string A hardcoded string, "<secret>", so that the actual secret
      * is not accidentally revealed.
      */
-    public function __toString(): string {
+    public function __toString(): string
+    {
         return '<secret>';
     }
 
-    public function __debugInfo(): array {
+    public function __debugInfo(): array
+    {
         return ['secret' => '<secret>'];
     }
 
@@ -57,7 +63,8 @@ final class Secret {
      * @param string The mask
      * @return string The obfuscated or deobfuscated string
      */
-    private function mask(string $string, string $noise): string {
+    private function mask(string $string, string $noise): string
+    {
         $result = '';
         $len = mb_strlen($string, '8bit');
         $noise_len = mb_strlen($noise, '8bit');
@@ -69,5 +76,4 @@ final class Secret {
         }
         return $result;
     }
-
 }
