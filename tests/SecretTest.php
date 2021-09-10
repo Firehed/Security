@@ -3,16 +3,10 @@
 namespace Firehed\Security;
 
 /**
- * @coversDefaultClass Firehed\Security\Secret
- * @covers ::<protected>
- * @covers ::<private>
+ * @covers Firehed\Security\Secret
  */
 class SecretTest extends \PHPUnit\Framework\TestCase
 {
-
-    /**
-     * @covers ::__construct
-     */
     public function testConstruct()
     {
         $this->assertInstanceOf(
@@ -21,9 +15,6 @@ class SecretTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @covers ::reveal
-     */
     public function testOpenEnvelope()
     {
         $test_string = md5(time());
@@ -35,9 +26,6 @@ class SecretTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @covers ::__toString
-     */
     public function testToString()
     {
         $test_string = md5(time());
@@ -50,9 +38,6 @@ class SecretTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @covers ::__debugInfo
-     */
     public function testSecretIsHiddenFromPrintR()
     {
         if (version_compare(PHP_VERSION, '5.6.0', '<')) {
@@ -68,9 +53,6 @@ class SecretTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @covers ::__debugInfo
-     */
     public function testSecretIsHiddenFromVarDump()
     {
         if (version_compare(PHP_VERSION, '5.6.0', '<')) {
@@ -88,10 +70,6 @@ class SecretTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::reveal
-     */
     public function testMaskingStringLongerThanNoiseLength()
     {
         $noise = SecretKey::getKey();

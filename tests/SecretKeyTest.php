@@ -3,16 +3,10 @@
 namespace Firehed\Security;
 
 /**
- * @coversDefaultClass Firehed\Security\SecretKey
- * @covers ::<protected>
- * @covers ::<private>
+ * @covers Firehed\Security\SecretKey
  */
 class SecretKeyTest extends \PHPUnit\Framework\TestCase
 {
-
-    /**
-     * @covers ::getKey
-     */
     public function testGetKey()
     {
         $this->assertIsString(SecretKey::getKey());
