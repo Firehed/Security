@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Firehed\Security;
@@ -26,4 +27,3 @@ function TOTP(Secret $key, array $options = []): string
 
     return HOTP($key, $counter, $digits, $algorithm);
 }
-

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Firehed\Security;
@@ -28,11 +29,13 @@ function HOTP(
         // "Implementations MUST extract a 6-digit code at a minimum and
         // possibly 7 and 8-digit code."
         throw new LengthException(
-            'RFC4226 requires a 6 to 8-digit output');
+            'RFC4226 requires a 6 to 8-digit output'
+        );
     }
     if (strlen($key->reveal()) < 128 / 8) {
         throw new LengthException(
-            'Key must be at least 128 bits long (160+ recommended)');
+            'Key must be at least 128 bits long (160+ recommended)'
+        );
     }
 
     $counter = pack('J', $counter); // Convert to 8-byte string
@@ -49,4 +52,3 @@ function HOTP(
     // Finally, prepend zeroes to match the string length
     return str_pad($code, $digits, '0', \STR_PAD_LEFT);
 }
-

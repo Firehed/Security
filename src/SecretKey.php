@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Firehed\Security;
@@ -7,14 +8,18 @@ namespace Firehed\Security;
  * Holds the key for Secret in a separate class and file to prevent appearance
  * in backtraces, etc. You should never need to use this class directly.
  */
-final class SecretKey {
+final class SecretKey
+{
 
     private static $key;
 
     // Private constructor: only access is allowed through getKey()
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
-    public static function getKey(): string {
+    public static function getKey(): string
+    {
         if (self::$key === null) {
             // NOTE: This is NOT intended to be cryptographically-secure; this
             // is obfuscation only. This just ensures garbage rather than
@@ -24,5 +29,4 @@ final class SecretKey {
         }
         return self::$key;
     }
-
 }
