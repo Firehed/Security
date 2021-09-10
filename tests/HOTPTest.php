@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Firehed\Security;
 
-class HOTPTest extends \PHPUnit_Framework_TestCase
+class HOTPTest extends \PHPUnit\Framework\TestCase
 {
     // https://tools.ietf.org/html/rfc4226#page-32
     public function vectors(): array

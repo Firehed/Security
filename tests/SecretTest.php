@@ -7,7 +7,7 @@ namespace Firehed\Security;
  * @covers ::<protected>
  * @covers ::<private>
  */
-class SecretTest extends \PHPUnit_Framework_TestCase
+class SecretTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
