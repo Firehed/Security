@@ -34,7 +34,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          coverage: pcov
+          coverage: xdebug
           ini-values: zend.assertions=1, assert.exception=1, error_reporting=-1
           php-version: ${{ matrix.php }}
 
