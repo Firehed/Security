@@ -22,7 +22,8 @@
     },
     "require-dev": {
         "firehed/arctools": "^1",
-        "phpunit/phpunit": "~5"
+        "phpunit/phpunit": "~5",
+        "squizlabs/php_codesniffer": "^3.6"
     },
     "suggest": {
         "paragonie/constant_time_encoding":
@@ -36,5 +37,8 @@
             "src/HOTP.php",
             "src/TOTP.php"
         ]
+    },
+    "scripts": {
+        "phpcs": "phpcs"
     }
 }
