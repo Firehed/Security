@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Firehed\Security;
 
 /**
@@ -7,7 +9,7 @@ namespace Firehed\Security;
  */
 class SecretTest extends \PHPUnit\Framework\TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $this->assertInstanceOf(
             Secret::class,
@@ -15,9 +17,9 @@ class SecretTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testOpenEnvelope()
+    public function testOpenEnvelope(): void
     {
-        $test_string = md5(time());
+        $test_string = md5(random_bytes(10));
         $secret = new Secret($test_string);
         $this->assertSame(
             $test_string,
@@ -26,9 +28,9 @@ class SecretTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testToString()
+    public function testToString(): void
     {
-        $test_string = md5(time());
+        $test_string = md5(random_bytes(10));
         $secret = new Secret($test_string);
         $cast_output = (string)$secret;
         $this->assertNotSame(
@@ -38,12 +40,9 @@ class SecretTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testSecretIsHiddenFromPrintR()
+    public function testSecretIsHiddenFromPrintR(): void
     {
-        if (version_compare(PHP_VERSION, '5.6.0', '<')) {
-            $this->markTestSkipped('__debugInfo was not added until 5.6');
-        }
-        $test_string = md5(time());
+        $test_string = md5(random_bytes(10));
         $secret = new Secret($test_string);
         $dumped = print_r($secret, true);
         $this->assertStringNotContainsString(
@@ -53,16 +52,14 @@ class SecretTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testSecretIsHiddenFromVarDump()
+    public function testSecretIsHiddenFromVarDump(): void
     {
-        if (version_compare(PHP_VERSION, '5.6.0', '<')) {
-            $this->markTestSkipped('__debugInfo was not added until 5.6');
-        }
-        $test_string = md5(time());
+        $test_string = md5(random_bytes(10));
         $secret = new Secret($test_string);
         ob_start();
         var_dump($secret);
         $dumped = ob_get_clean();
+        assert($dumped !== false);
         $this->assertStringNotContainsString(
             $test_string,
             $dumped,
@@ -70,7 +67,7 @@ class SecretTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testMaskingStringLongerThanNoiseLength()
+    public function testMaskingStringLongerThanNoiseLength(): void
     {
         $noise = SecretKey::getKey();
         $noise_length = mb_strlen($noise, '8bit');

@@ -9,7 +9,13 @@ namespace Firehed\Security;
  */
 class HOTPTest extends \PHPUnit\Framework\TestCase
 {
-    // https://tools.ietf.org/html/rfc4226#page-32
+    /**
+     * Test vectors provided by RFC 4226, Appendix D
+     *
+     * @link https://tools.ietf.org/html/rfc4226#page-32
+     *
+     * @return array{Secret, int, string}[]
+     */
     public function vectors(): array
     {
         $secret = new Secret('12345678901234567890');
@@ -30,27 +36,28 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider vectors
      */
-    public function testHOTP(Secret $secret, int $counter, string $out)
+    public function testHOTP(Secret $secret, int $counter, string $out): void
     {
-        $this->assertSame(
+        self::assertSame(
             $out,
             HOTP($secret, $counter),
             'Wrong HOTP output'
         );
     }
 
-    public function testBadAlgorithm()
+    public function testBadAlgorithm(): void
     {
         $this->expectException(\OutOfRangeException::class);
         HOTP(
             new Secret('abcdefgijklmnopqrstuvwxyz'),
             0x1234567890123456,
             6,
+            // @phpstan-ignore-next-line (testing type mismatch)
             'notalg'
         );
     }
 
-    public function testTooFewDigits()
+    public function testTooFewDigits(): void
     {
         $this->expectException(\LengthException::class);
         HOTP(
@@ -60,7 +67,7 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testTooManyDigits()
+    public function testTooManyDigits(): void
     {
         $this->expectException(\LengthException::class);
         HOTP(
@@ -70,7 +77,7 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testInvalidKeyLength()
+    public function testInvalidKeyLength(): void
     {
         $this->expectException(\LengthException::class);
         HOTP(
