@@ -22,14 +22,14 @@ namespace Firehed\Security;
  */
 final class Secret
 {
-
     /**
      * Obfuscated value
+     * @var string
      */
     private $value;
 
     /**
-     * @param string The secret to obscure
+     * @param string $string The secret to obscure
      */
     public function __construct(string $string)
     {
@@ -53,14 +53,17 @@ final class Secret
         return '<secret>';
     }
 
+    /**
+     * @return array{secret: '<secret>'}
+     */
     public function __debugInfo(): array
     {
         return ['secret' => '<secret>'];
     }
 
     /**
-     * @param string The string to obfuscate or deobfuscate
-     * @param string The mask
+     * @param string $string The string to obfuscate or deobfuscate
+     * @param string $noise The mask
      * @return string The obfuscated or deobfuscated string
      */
     private function mask(string $string, string $noise): string
