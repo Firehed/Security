@@ -9,16 +9,14 @@ use OutOfRangeException;
 
 if (!function_exists('Firehed\Security\HOTP')) {
     /**
-     * HMAC-Based One-Time Password Algorithm
-     *
-     * @see RFC 4226
+     * Wrapper for `OTP::getHOTP()`. See that method for additional
+     * documentation. This is not deprecated, but it is still recommended to
+     * use the object-based interface instead.
      *
      * @param Secret $key shared secret, treated as binary
      * @param int $counter 8-byte counter
      * @param int<6, 8> $digits = 6 Length of the output code
      * @param 'sha1'|'sha256'|'sha512' $algorithm = 'sha1' HMAC algorithm
-     *
-     * @return string n-character numeric code
      */
     function HOTP(
         Secret $key,
