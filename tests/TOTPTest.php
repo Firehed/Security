@@ -6,8 +6,11 @@ namespace Firehed\Security;
 
 class TOTPTest extends \PHPUnit_Framework_TestCase
 {
-
-    // Test vectors provided by RFC 6238, Appendix B
+    /**
+     * Test vectors provided by RFC 6238, Appendix B
+     *
+     * @return array{int, string, 'sha1'|'sha256'|'sha512', Secret}[]
+     */
     public function TOTPvectors(): array
     {
         // It's unclear that the token is of varying length based on the
@@ -47,7 +50,7 @@ class TOTPTest extends \PHPUnit_Framework_TestCase
         string $expectedOut,
         string $algo,
         Secret $key
-    ) {
+    ): void {
         $_SERVER['REQUEST_TIME'] = $ts;
         $this->assertSame(
             $expectedOut,
