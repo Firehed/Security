@@ -7,6 +7,7 @@ namespace Firehed\Security;
 use LengthException;
 use OutOfRangeException;
 
+// Note: wrapped to prevent weird code coverage loading issue.
 if (!function_exists('Firehed\Security\HOTP')) {
     /**
      * Wrapper for `OTP::getHOTP()`. See that method for additional

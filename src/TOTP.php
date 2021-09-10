@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Firehed\Security;
 
+// Note: wrapped to prevent weird code coverage loading issue.
 if (!function_exists('Firehed\Security\TOTP')) {
     /**
      * Wrapper for `OTP::getTOTP()`. See that method for additional
-     * documentation.
+     * documentation. This is not deprecated, but it is still recommended to
+     * use the object-based interface instead.
      *
      * @param Secret $key shared secret, treated as binary
      * @param array{
