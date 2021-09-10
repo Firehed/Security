@@ -27,14 +27,27 @@ class OTP
     /** @var Secret */
     private $secret;
 
+    /**
+     * Note: Google Authenticator's keys are base32-encoded, and must be decoded
+     * to binary before being used as a Secret. Be cautious about storage of
+     * key material to avoid format mangling, and ensure that key material is
+     * kept protected at rest and unique to each user.
+     */
     public function __construct(Secret $secret)
     {
         $this->secret = $secret;
     }
 
     /**
-     * @param int<6, 8> $digits
-     * @param self::ALGORITHM_* $algorithm
+     * HMAC-Based One-Time Password Algorithm
+     *
+     * @see RFC 4226
+     *
+     * @param int $counter 8-byte counter
+     * @param int<6, 8> $digits = 6 Length of the output code
+     * @param 'sha1'|'sha256'|'sha512' $algorithm = 'sha1' HMAC algorithm
+     *
+     * @return string The $digits-character numeric code
      */
     public function getHOTP(int $counter, int $digits = 6, string $algorithm = self::ALGORITHM_SHA1): string
     {
@@ -76,8 +89,29 @@ class OTP
     }
 
     /**
-     * @param int<6, 8> $digits
-     * @param self::ALGORITHM_* $algorithm
+     * Time-based One-Time Password Algorithm
+     *
+     * @see RFC 6238
+     *
+     * @param int $step = 30 The time step in seconds (section 4.1; `X`)
+     *
+     * @param int $t0 = 0 The Unix time to start counting time steps (section
+     * 4.1; `T0`); defaults to the Unix epoch.
+     *
+     * @param int<6, 8> $digits = 6 The number of digits in the output code
+     *
+     * @param self::ALGORITHM_* $algorithm = self::ALGORITHM_SHA1 The hashing
+     * algorithm to use with the key and generated counter.
+     *
+     * To address clock drift and slow inputs, the $t0 parameter may be used to
+     * check for the next and/or previous code. This will adjust the time by the
+     * given number of seconds; as such, it's advisable to use values that are
+     * a multiple of $step. Implementations MAY want to validate against
+     * `->getTOTP(t0: 30)` and/or `->getTOTP(t0: -30)` if the current time code
+     * does not match the user's input. See section 6 of the RFC for additional
+     * detail and recommendations.
+     *
+     * @return string $step-character long numeric code
      */
     public function getTOTP(
         int $step = 30,
