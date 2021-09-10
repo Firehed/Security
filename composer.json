@@ -37,5 +37,8 @@
             "src/HOTP.php",
             "src/TOTP.php"
         ]
+    },
+    "scripts": {
+        "phpcs": "phpcs"
     }
 }
