@@ -3,15 +3,10 @@
 namespace Firehed\Security;
 
 /**
- * @coversDefaultClass Firehed\Security\Secret
- * @covers ::<protected>
- * @covers ::<private>
+ * @covers Firehed\Security\Secret
  */
-class SecretTest extends \PHPUnit_Framework_TestCase
+class SecretTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @covers ::__construct
-     */
     public function testConstruct(): void
     {
         $this->assertInstanceOf(
@@ -20,9 +15,6 @@ class SecretTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers ::reveal
-     */
     public function testOpenEnvelope(): void
     {
         $test_string = md5(time());
@@ -34,9 +26,6 @@ class SecretTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers ::__toString
-     */
     public function testToString(): void
     {
         $test_string = md5(time());
@@ -49,9 +38,6 @@ class SecretTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers ::__debugInfo
-     */
     public function testSecretIsHiddenFromPrintR(): void
     {
         if (version_compare(PHP_VERSION, '5.6.0', '<')) {
@@ -60,16 +46,13 @@ class SecretTest extends \PHPUnit_Framework_TestCase
         $test_string = md5(time());
         $secret = new Secret($test_string);
         $dumped = print_r($secret, true);
-        $this->assertNotContains(
+        $this->assertStringNotContainsString(
             $test_string,
             $dumped,
             'print_r revealed the secret'
         );
     }
 
-    /**
-     * @covers ::__debugInfo
-     */
     public function testSecretIsHiddenFromVarDump(): void
     {
         if (version_compare(PHP_VERSION, '5.6.0', '<')) {
@@ -80,17 +63,13 @@ class SecretTest extends \PHPUnit_Framework_TestCase
         ob_start();
         var_dump($secret);
         $dumped = ob_get_clean();
-        $this->assertNotContains(
+        $this->assertStringNotContainsString(
             $test_string,
             $dumped,
             'var_dump revealed the secret'
         );
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::reveal
-     */
     public function testMaskingStringLongerThanNoiseLength(): void
     {
         $noise = SecretKey::getKey();

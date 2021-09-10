@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Firehed\Security;
 
-class HOTPTest extends \PHPUnit_Framework_TestCase
+/**
+ * @covers Firehed\Security\HOTP
+ */
+class HOTPTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test vectors provided by RFC 4226, Appendix D
@@ -31,7 +34,6 @@ class HOTPTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Firehed\Security\HOTP
      * @dataProvider vectors
      */
     public function testHOTP(Secret $secret, int $counter, string $out): void
@@ -43,9 +45,6 @@ class HOTPTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers \Firehed\Security\HOTP
-     */
     public function testBadAlgorithm(): void
     {
         $this->expectException(\OutOfRangeException::class);
@@ -57,9 +56,6 @@ class HOTPTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers \Firehed\Security\HOTP
-     */
     public function testTooFewDigits(): void
     {
         $this->expectException(\LengthException::class);
@@ -70,9 +66,6 @@ class HOTPTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers \Firehed\Security\HOTP
-     */
     public function testTooManyDigits(): void
     {
         $this->expectException(\LengthException::class);
@@ -83,9 +76,6 @@ class HOTPTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers \Firehed\Security\HOTP
-     */
     public function testInvalidKeyLength(): void
     {
         $this->expectException(\LengthException::class);

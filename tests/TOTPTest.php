@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Firehed\Security;
 
-class TOTPTest extends \PHPUnit_Framework_TestCase
+/**
+ * @covers Firehed\Security\TOTP
+ */
+class TOTPTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test vectors provided by RFC 6238, Appendix B
@@ -42,7 +45,6 @@ class TOTPTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Firehed\Security\TOTP
      * @dataProvider TOTPvectors
      */
     public function testTOTPVectors(
