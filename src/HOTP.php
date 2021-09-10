@@ -10,11 +10,14 @@ use OutOfRangeException;
 if (!function_exists('Firehed\Security\HOTP')) {
     /**
      * HMAC-Based One-Time Password Algorithm
+     *
      * @see RFC 4226
-     * @param $key shared secret, treated as binary
-     * @param $counter 8-byte counter
-     * [@param $digits = 6] Length of the output code
-     * [@param $algorithm = 'sha1'] HMAC algorithm - sha1, sha256, and sha512 permitted
+     *
+     * @param Secret $key shared secret, treated as binary
+     * @param int $counter 8-byte counter
+     * @param int $digits = 6 Length of the output code
+     * @param 'sha1'|'sha256'|'sha512' $algorithm = 'sha1' HMAC algorithm
+     *
      * @return string n-character numeric code
      */
     function HOTP(
@@ -23,7 +26,7 @@ if (!function_exists('Firehed\Security\HOTP')) {
         int $digits = 6,
         string $algorithm = 'sha1'
     ): string {
-        if (!in_array($algorithm, ['sha1', 'sha256', 'sha512'])) {
+        if (!in_array($algorithm, ['sha1', 'sha256', 'sha512'], true)) {
             throw new OutOfRangeException('Unexpected algorithm');
         }
         if ($digits < 6 || $digits > 8) {
