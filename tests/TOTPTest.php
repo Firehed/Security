@@ -39,9 +39,9 @@ class TOTPTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers Firehed\Security\TOTP
+     * @covers Firehed\Security\OTP::TOTP
      * @dataProvider TOTPvectors
-     * @param 'sha1'|'sha256'|'sha512' $algo
+     * @param OTP::ALG_* $algo
      */
     public function testTOTPVectors(
         int $ts,

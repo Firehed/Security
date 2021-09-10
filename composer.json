@@ -35,8 +35,7 @@
             "Firehed\\Security\\": "src/"
         },
         "files": [
-            "src/HOTP.php",
-            "src/TOTP.php"
+            "src/functions.php"
         ]
     },
     "autoload-dev": {

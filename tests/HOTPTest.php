@@ -6,7 +6,6 @@ namespace Firehed\Security;
 
 class HOTPTest extends \PHPUnit\Framework\TestCase
 {
-
     // https://tools.ietf.org/html/rfc4226#page-32
     public function vectors(): array
     {
@@ -26,7 +25,7 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers Firehed\Security\HOTP
+     * @covers Firehed\Security\OTP::HOTP
      * @dataProvider vectors
      */
     public function testHOTP(Secret $secret, int $counter, string $out): void
@@ -39,7 +38,7 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers \Firehed\Security\HOTP
+     * @covers \Firehed\Security\OTP::HOTP
      */
     public function testBadAlgorithm(): void
     {
@@ -53,7 +52,7 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers \Firehed\Security\HOTP
+     * @covers \Firehed\Security\OTP::HOTP
      */
     public function testTooFewDigits(): void
     {
