@@ -16,9 +16,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        dependencies:
-          - 'high'
-          - 'low'
         php:
           - '7.1'
           - '7.2'
@@ -42,30 +39,18 @@ jobs:
         uses: actions/cache@v2
         with:
           path: vendor
-          key: ${{ runner.os }}-php-${{ matrix.dependencies }}-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-php-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
           restore-keys: |
-            ${{ runner.os }}-php-${{ matrix.dependencies }}-${{ matrix.php }}-
-            ${{ runner.os }}-php-${{ matrix.dependencies }}-
+            ${{ runner.os }}-php-${{ matrix.php }}-
             ${{ runner.os }}-php-
 
-      - name: Install highest dependencies
-        if: ${{ matrix.dependencies == 'high' }}
+      - name: Install dependencies
         run: composer update
           --no-ansi
           --no-interaction
           --no-progress
           --no-suggest
           --prefer-dist
-
-      - name: Install lowest dependencies
-        if: ${{ matrix.dependencies == 'low' }}
-        run: composer update
-          --no-ansi
-          --no-interaction
-          --no-progress
-          --no-suggest
-          --prefer-dist
-          --prefer-lowest
 
       - name: PHPUnit
         run: vendor/bin/phpunit
