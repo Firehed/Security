@@ -38,12 +38,17 @@
     },
     "autoload": {
         "psr-4": {
-            "Firehed\\Security\\": ["src/", "tests/"]
+            "Firehed\\Security\\": "src/"
         },
         "files": [
             "src/HOTP.php",
             "src/TOTP.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Firehed\\Security\\": "tests/"
+        }
     },
     "scripts": {
         "test": [
