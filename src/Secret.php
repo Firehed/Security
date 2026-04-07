@@ -75,7 +75,7 @@ final class Secret
             $s = $string[$ii];
             $n = $noise[$ii % $noise_len];
 
-            $result .= chr(ord($s) ^ ord($n));
+            $result .= chr((ord($s) ^ ord($n)) & 0xFF);
         }
         return $result;
     }

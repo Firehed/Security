@@ -11,6 +11,7 @@ class SecretKeyTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetKey(): void
     {
-        $this->assertIsString(SecretKey::getKey());
+        $key = SecretKey::getKey();
+        $this->assertNotEmpty($key);
     }
 }
