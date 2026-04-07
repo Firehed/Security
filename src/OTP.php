@@ -60,7 +60,7 @@ class OTP
             throw new DomainException('Invalid algorithm');
         }
 
-        /** @var int $digits (same as above) */
+        /** @var int $digits (same as above) @phpstan-ignore varTag.type */
         if ($digits < 6 || $digits > 8) {
             // "Implementations MUST extract a 6-digit code at a minimum and
             // possibly 7 and 8-digit code."
@@ -143,6 +143,7 @@ class OTP
         // Binary Code"
         $parsed = unpack('N', $bytes);
         assert($parsed !== false);
+        /** @var int $dbc1 */
         $dbc1 = $parsed[1];
         // Mask out the high bit (per the spec, avoids signed/unsigned issues)
         $dbc2 = $dbc1 & 0x7FFFFFFF;
