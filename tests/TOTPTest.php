@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Firehed\Security;
 
-/**
- * @covers Firehed\Security\OTP
- * @covers Firehed\Security\TOTP
- */
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+
+#[CoversClass(OTP::class)]
+#[CoversClass(\Firehed\Security\TOTP::class)]
 class TOTPTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -15,7 +16,7 @@ class TOTPTest extends \PHPUnit\Framework\TestCase
      *
      * @return array{int, string, 'sha1'|'sha256'|'sha512', Secret}[]
      */
-    public function TOTPvectors(): array
+    public static function TOTPvectors(): array
     {
         // It's unclear that the token is of varying length based on the
         // algoritm being used, but that's definitely the case
@@ -46,9 +47,9 @@ class TOTPTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @dataProvider TOTPvectors
      * @param 'sha1'|'sha256'|'sha512' $algo
      */
+    #[DataProvider('TOTPvectors')]
     public function testTOTPVectors(
         int $ts,
         string $expectedOut,

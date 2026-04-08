@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Firehed\Security;
 
-/**
- * @covers Firehed\Security\OTP
- * @covers Firehed\Security\HOTP
- */
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+
+#[CoversClass(OTP::class)]
+#[CoversClass(\Firehed\Security\HOTP::class)]
 class HOTPTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -17,7 +18,7 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
      *
      * @return array{Secret, int, string}[]
      */
-    public function vectors(): array
+    public static function vectors(): array
     {
         $secret = new Secret('12345678901234567890');
         return [
@@ -34,9 +35,7 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @dataProvider vectors
-     */
+    #[DataProvider('vectors')]
     public function testHOTP(Secret $secret, int $counter, string $out): void
     {
         self::assertSame(

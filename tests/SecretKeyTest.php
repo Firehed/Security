@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Firehed\Security;
 
-/**
- * @covers Firehed\Security\SecretKey
- */
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(SecretKey::class)]
 class SecretKeyTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetKey(): void
