@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Firehed\Security;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 #[CoversClass(OTP::class)]
-#[CoversClass(\Firehed\Security\HOTP::class)]
+#[CoversFunction('Firehed\Security\HOTP')]
 class HOTPTest extends \PHPUnit\Framework\TestCase
 {
     /**
