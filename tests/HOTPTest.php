@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Firehed\Security;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 #[CoversClass(OTP::class)]
-#[CoversFunction('Firehed\Security\HOTP')]
 class HOTPTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -39,21 +37,22 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
     #[DataProvider('vectors')]
     public function testHOTP(Secret $secret, int $counter, string $out): void
     {
+        $otp = new OTP($secret);
         self::assertSame(
             $out,
-            HOTP($secret, $counter),
+            $otp->getHOTP($counter),
             'Wrong HOTP output'
         );
     }
 
     public function testBadAlgorithm(): void
     {
-        $this->expectException(\LogicException::class);
-        HOTP(
-            new Secret('abcdefgijklmnopqrstuvwxyz'),
+        $this->expectException(\DomainException::class);
+        $otp = new OTP(new Secret('abcdefgijklmnopqrstuvwxyz'));
+        $otp->getHOTP(
             0x1234567890123456,
             6,
-            // @phpstan-ignore-next-line (testing type mismatch)
+            // @phpstan-ignore argument.type (testing type mismatch)
             'notalg'
         );
     }
@@ -61,10 +60,10 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
     public function testTooFewDigits(): void
     {
         $this->expectException(\LengthException::class);
-        HOTP(
-            new Secret('abcdefgijklmnopqrstuvwxyz'),
+        $otp = new OTP(new Secret('abcdefgijklmnopqrstuvwxyz'));
+        $otp->getHOTP(
             0x1234567890123456,
-            // @phpstan-ignore-next-line validation check
+            // @phpstan-ignore argument.type
             4
         );
     }
@@ -72,10 +71,10 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
     public function testTooManyDigits(): void
     {
         $this->expectException(\LengthException::class);
-        HOTP(
-            new Secret('abcdefgijklmnopqrstuvwxyz'),
+        $otp = new OTP(new Secret('abcdefgijklmnopqrstuvwxyz'));
+        $otp->getHOTP(
             0x1234567890123456,
-            // @phpstan-ignore-next-line validation check
+            // @phpstan-ignore argument.type
             9
         );
     }
@@ -83,9 +82,7 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
     public function testInvalidKeyLength(): void
     {
         $this->expectException(\LengthException::class);
-        HOTP(
-            new Secret('123456789012345'),
-            0x1234567890123456
-        );
+        $otp = new OTP(new Secret('123456789012345'));
+        $otp->getHOTP(0x1234567890123456);
     }
 }
