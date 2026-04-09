@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Firehed\Security;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 #[CoversClass(OTP::class)]
-#[CoversFunction('Firehed\Security\TOTP')]
 class TOTPTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -55,22 +53,20 @@ class TOTPTest extends \PHPUnit\Framework\TestCase
         int $ts,
         string $expectedOut,
         string $algo,
-        Secret $key
+        Secret $key,
     ): void {
         // Note: this isn't really the intended use of T0, as it's really meant
         // to adjust by a step or two for clock drift. However, it serves the
         // intended purpose of offsetting the `T` value  _to_ the intended
         // timestamp from the provided test vectors.
         $t0 = time() - $ts;
+        $otp = new OTP($key);
         $this->assertSame(
             $expectedOut,
-            TOTP(
-                $key,
-                [
-                    'algorithm' => $algo,
-                    'digits' => 8, // strlen($expectedOut), all are the same
-                    'offset' => $t0,
-                ]
+            $otp->getTOTP(
+                t0: $t0,
+                digits: 8,
+                algorithm: $algo,
             ),
             'TOTP output was incorrect'
         );
