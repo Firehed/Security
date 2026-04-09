@@ -4,18 +4,18 @@
 
 ### Added
 
-- `Algorithm` enum for OTP hashing algorithms (replaces string constants)
+- `Algorithm` enum for OTP hashing algorithms
 - `OTP` constructor now accepts `Secret|string` for convenience
 
 ### Changed
 
-- **BREAKING**: `OTP::getHOTP()` and `OTP::getTOTP()` now require `Algorithm` enum instead of string for the algorithm parameter
+- `OTP::getHOTP()` and `OTP::getTOTP()` now accept `Algorithm` enum instead of string
+- `OTP::ALGORITHM_*` constants are deprecated; use `Algorithm` enum directly
 - Modernized codebase to use PHP 8.2+ features (readonly properties, typed properties, constructor property promotion)
 
 ### Removed
 
 - **BREAKING**: `HOTP()` and `TOTP()` functions have been removed. Use the `OTP` class directly instead.
-- **BREAKING**: `OTP::ALGORITHM_*` string constants have been removed. Use the `Algorithm` enum instead.
 
   Before:
   ```php

@@ -20,6 +20,13 @@ use function unpack;
 
 class OTP
 {
+    /** @deprecated Use Algorithm::SHA1 instead */
+    public const ALGORITHM_SHA1 = Algorithm::SHA1;
+    /** @deprecated Use Algorithm::SHA256 instead */
+    public const ALGORITHM_SHA256 = Algorithm::SHA256;
+    /** @deprecated Use Algorithm::SHA512 instead */
+    public const ALGORITHM_SHA512 = Algorithm::SHA512;
+
     private readonly Secret $secret;
 
     /**
@@ -55,7 +62,6 @@ class OTP
         }
 
         $key = $this->secret->reveal();
-
         if (strlen($key) < (128 / 8)) {
             throw new LengthException(
                 'Key must be at least 128 bits long (160+ recommended)'
