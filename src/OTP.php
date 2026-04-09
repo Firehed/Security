@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Firehed\Security;
 
-use DomainException;
 use LengthException;
 
 use function assert;
@@ -20,9 +19,12 @@ use function unpack;
 
 class OTP
 {
-    public const ALGORITHM_SHA1 = 'sha1';
-    public const ALGORITHM_SHA256 = 'sha256';
-    public const ALGORITHM_SHA512 = 'sha512';
+    /** @deprecated Use Algorithm::SHA1 instead */
+    public const ALGORITHM_SHA1 = Algorithm::SHA1;
+    /** @deprecated Use Algorithm::SHA256 instead */
+    public const ALGORITHM_SHA256 = Algorithm::SHA256;
+    /** @deprecated Use Algorithm::SHA512 instead */
+    public const ALGORITHM_SHA512 = Algorithm::SHA512;
 
     /** @var Secret */
     private $secret;
@@ -45,22 +47,12 @@ class OTP
      *
      * @param int $counter 8-byte counter
      * @param int<6, 8> $digits = 6 Length of the output code
-     * @param 'sha1'|'sha256'|'sha512' $algorithm = 'sha1' HMAC algorithm
      *
      * @return string The $digits-character numeric code
      */
-    public function getHOTP(int $counter, int $digits = 6, string $algorithm = self::ALGORITHM_SHA1): string
+    public function getHOTP(int $counter, int $digits = 6, Algorithm $algorithm = Algorithm::SHA1): string
     {
-        /** @var string $algorithm (don't rely on build-time types) */
-        if (
-            $algorithm !== self::ALGORITHM_SHA1
-            && $algorithm !== self::ALGORITHM_SHA256
-            && $algorithm !== self::ALGORITHM_SHA512
-        ) {
-            throw new DomainException('Invalid algorithm');
-        }
-
-        /** @var int $digits (same as above) @phpstan-ignore varTag.type */
+        /** @var int $digits @phpstan-ignore varTag.type */
         if ($digits < 6 || $digits > 8) {
             // "Implementations MUST extract a 6-digit code at a minimum and
             // possibly 7 and 8-digit code."
@@ -78,7 +70,7 @@ class OTP
         $counter = pack('J', $counter); // Convert to 8-byte string
 
         // 5.3 Step 1: Generate hash value
-        $hash = hash_hmac($algorithm, $counter, $this->secret->reveal(), true);
+        $hash = hash_hmac($algorithm->value, $counter, $this->secret->reveal(), true);
 
         $dbc = self::dynamicTruncate($hash);
         // 5.3 Step 3: Compute HOTP value
@@ -100,9 +92,6 @@ class OTP
      *
      * @param int<6, 8> $digits = 6 The number of digits in the output code
      *
-     * @param self::ALGORITHM_* $algorithm = self::ALGORITHM_SHA1 The hashing
-     * algorithm to use with the key and generated counter.
-     *
      * To address clock drift and slow inputs, the $t0 parameter may be used to
      * check for the next and/or previous code. This will adjust the time by the
      * given number of seconds; as such, it's advisable to use values that are
@@ -117,7 +106,7 @@ class OTP
         int $step = 30,
         int $t0 = 0,
         int $digits = 6,
-        string $algorithm = self::ALGORITHM_SHA1
+        Algorithm $algorithm = Algorithm::SHA1,
     ): string {
         $t = (int) floor((time() - $t0) / $step);
         return $this->getHOTP($t, $digits, $algorithm);
