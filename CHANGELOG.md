@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+### Added
+
+- `Algorithm` enum for OTP hashing algorithms
+
+### Changed
+
+- `OTP::getHOTP()` and `OTP::getTOTP()` now accept `Algorithm` enum instead of string
+- `OTP::ALGORITHM_*` constants are deprecated; use `Algorithm` enum directly
+
 ### Removed
 
 - **BREAKING**: `HOTP()` and `TOTP()` functions have been removed. Use the `OTP` class directly instead.
