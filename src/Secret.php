@@ -24,32 +24,18 @@ use SensitiveParameter;
  */
 final class Secret
 {
-    /**
-     * Obfuscated value
-     * @var string
-     */
-    private $value;
+    private readonly string $value;
 
-    /**
-     * @param string $string The secret to obscure
-     */
     public function __construct(#[SensitiveParameter] string $string)
     {
         $this->value = $this->mask($string, SecretKey::getKey());
     }
 
-    /**
-     * @return string The original secret
-     */
     public function reveal(): string
     {
         return $this->mask($this->value, SecretKey::getKey());
     }
 
-    /**
-     * @return string A hardcoded string, "<secret>", so that the actual secret
-     * is not accidentally revealed.
-     */
     public function __toString(): string
     {
         return '<secret>';
@@ -63,11 +49,6 @@ final class Secret
         return ['secret' => '<secret>'];
     }
 
-    /**
-     * @param string $string The string to obfuscate or deobfuscate
-     * @param string $noise The mask
-     * @return string The obfuscated or deobfuscated string
-     */
     private function mask(#[SensitiveParameter] string $string, #[SensitiveParameter] string $noise): string
     {
         $result = '';

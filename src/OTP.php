@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Firehed\Security;
 
 use LengthException;
+use SensitiveParameter;
 
 use function assert;
 use function floor;
@@ -26,8 +27,7 @@ class OTP
     /** @deprecated Use Algorithm::SHA512 instead */
     public const ALGORITHM_SHA512 = Algorithm::SHA512;
 
-    /** @var Secret */
-    private $secret;
+    private readonly Secret $secret;
 
     /**
      * Note: Google Authenticator's keys are base32-encoded, and must be decoded
@@ -35,9 +35,9 @@ class OTP
      * key material to avoid format mangling, and ensure that key material is
      * kept protected at rest and unique to each user.
      */
-    public function __construct(Secret $secret)
+    public function __construct(#[SensitiveParameter] Secret|string $secret)
     {
-        $this->secret = $secret;
+        $this->secret = $secret instanceof Secret ? $secret : new Secret($secret);
     }
 
     /**
@@ -61,7 +61,8 @@ class OTP
             );
         }
 
-        if (strlen($this->secret->reveal()) < (128 / 8)) {
+        $key = $this->secret->reveal();
+        if (strlen($key) < (128 / 8)) {
             throw new LengthException(
                 'Key must be at least 128 bits long (160+ recommended)'
             );
@@ -70,7 +71,7 @@ class OTP
         $counter = pack('J', $counter); // Convert to 8-byte string
 
         // 5.3 Step 1: Generate hash value
-        $hash = hash_hmac($algorithm->value, $counter, $this->secret->reveal(), true);
+        $hash = hash_hmac($algorithm->value, $counter, $key, true);
 
         $dbc = self::dynamicTruncate($hash);
         // 5.3 Step 3: Compute HOTP value
