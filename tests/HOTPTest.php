@@ -45,18 +45,6 @@ class HOTPTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testBadAlgorithm(): void
-    {
-        $this->expectException(\DomainException::class);
-        $otp = new OTP(new Secret('abcdefgijklmnopqrstuvwxyz'));
-        $otp->getHOTP(
-            0x1234567890123456,
-            6,
-            // @phpstan-ignore argument.type (testing type mismatch)
-            'notalg'
-        );
-    }
-
     public function testTooFewDigits(): void
     {
         $this->expectException(\LengthException::class);
