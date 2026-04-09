@@ -140,6 +140,44 @@ So if an attacker figures out the first byte of the mask, they will know bytes 1
 
 The implementation makes every effort possible to make the masked value impossible to leak, but it can't catch every scenario due to PHP's user-land limitations (e.g. it's impossible to intercept `var_export`).
 
+#### How does this relate to PHP 8.2's `#[SensitiveParameter]`?
+
+PHP 8.2 introduced the native `#[SensitiveParameter]` attribute, which redacts parameter values from stack traces.
+This has some overlap with `Secret`, but they serve different purposes:
+
+| Feature | `Secret` | `#[SensitiveParameter]` |
+|---------|----------|-------------------------|
+| Redacts from stack traces | Yes | Yes |
+| Redacts from `var_dump` | Yes | No |
+| Redacts from `print_r` | Yes | No |
+| Redacts from `echo`/casting | Yes | No |
+| Can wrap values anywhere | Yes | No (parameters only) |
+| Requires PHP 8.2+ | No | Yes |
+
+**When to use `#[SensitiveParameter]` alone:**
+For simple cases where you only need stack trace protection and the sensitive value is short-lived within a single function call.
+
+```php
+function authenticate(#[SensitiveParameter] string $password): bool
+{
+    return password_verify($password, $this->hash);
+}
+```
+
+**When to use `Secret`:**
+When you need broader protection, especially if the value is passed through multiple layers, stored temporarily, or might be exposed via debugging functions.
+
+**When to use both:**
+For defense in depth, you can combine them.
+The attribute protects at the boundary; the wrapper protects throughout:
+
+```php
+function authenticate(#[SensitiveParameter] Secret $password): bool
+{
+    return password_verify($password->reveal(), $this->hash);
+}
+```
+
 ## OTP: One-Time Passwords
 
 OTPs allow for a shared secret between a client and a server to perform authentication by hashing a known "counter" or "moving factor".

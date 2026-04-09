@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Firehed\Security;
 
+use SensitiveParameter;
+
 /**
  * Opaque reference to a string (like a password) that won't put any sensitive
  * data in stack traces, var_dump(), print_r(), error logs, etc. Usage:
@@ -31,7 +33,7 @@ final class Secret
     /**
      * @param string $string The secret to obscure
      */
-    public function __construct(string $string)
+    public function __construct(#[SensitiveParameter] string $string)
     {
         $this->value = $this->mask($string, SecretKey::getKey());
     }
@@ -66,7 +68,7 @@ final class Secret
      * @param string $noise The mask
      * @return string The obfuscated or deobfuscated string
      */
-    private function mask(string $string, string $noise): string
+    private function mask(#[SensitiveParameter] string $string, #[SensitiveParameter] string $noise): string
     {
         $result = '';
         $len = mb_strlen($string, '8bit');
