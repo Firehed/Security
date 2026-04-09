@@ -189,14 +189,8 @@ You probably will not need to use this directly, since most user-facing OTP appl
 However, for reference, the API is as follows:
 
 ```php
-// Preferred: Object-oriented
-
-$otp = new \Firehed\Security\OTP(Secret $secret);
-$code = $otp->getHOTP(int $counter, int $digits = 6, string $algorithm = OTP::ALGORITHM_SHA1);
-
-// Legacy: function-based
-
-$code = \Firehed\Security\HOTP(Secret $key, int $counter, int $digits = 6, string $algorithm = 'sha1');
+$otp = new \Firehed\Security\OTP($secret);
+$code = $otp->getHOTP(counter: $counter);
 ```
 
 Detailed parameter documentation is on the OTP class.
@@ -209,13 +203,8 @@ This was made popular by Google Authenticator, although a handful of TOTP client
 The API is extremely straightforward with the default values:
 
 ```php
-// Preferred: Object-oriented
-
-$otp = new \Firehed\Security\OTP(Secret $secret);
-$code = $otp->getTOTP(int $step = 30, int $t0 = 0, int $digits = 6, string $algorithm = OTP::ALGORITHM_SHA1);
-
-// Legacy: function-based
-$code = \Firehed\Security\TOTP(Secret $key, array $options = []): string
+$otp = new \Firehed\Security\OTP($secret);
+$code = $otp->getTOTP();
 ```
 
 Detailed parameter documentation is on the OTP class.
@@ -228,8 +217,6 @@ Generating the one-time code is therefore very simple:
 $secret = new \Firehed\Security\Secret('some shared secret');
 $otp = new \Firehed\Security\OTP($secret);
 $code = $otp->getTOTP();
-
-// Or: $code = \Firehed\Security\TOTP($secret);
 ```
 
 You should verify the expected value against the user's provided value with the
@@ -241,12 +228,12 @@ return hash_equals($user_input, $code);
 
 Options allow for changing the number of output digits (default 6), hashing algorithm (sha1), or step (30 seconds).
 Because most TOTP client apps don't fully support all of the options, it is recommended to only use the default values at this time.
-See the docblocks in `src/OTP.php` and `src/TOTP.php` for additional information.
+See the docblocks in `src/OTP.php` for additional information.
 
 Note:
 
-The secret provided to the `TOTP()` function must be the *raw value* - the one that a user adds to their app is normally sent to the user Base32-encoded.
-If you provide the Base32-encoded secret to the function, you will get the wrong result.
+The secret provided to the `OTP` class must be the *raw value* - the one that a user adds to their app is normally sent to the user Base32-encoded.
+If you provide the Base32-encoded secret, you will get the wrong result.
 
 ### Shared Secrets
 
